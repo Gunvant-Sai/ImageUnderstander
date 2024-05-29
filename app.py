@@ -4,6 +4,9 @@ from flask import  Flask, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
 import cv2
 import numpy as np
+# import additional libraries below
+
+
 
 app = Flask(__name__)
 
@@ -18,33 +21,31 @@ def load_form():
 def upload_image():
     file = request.files['file']
     filename = secure_filename(file.filename)
-
+    # write the read and write function on image below 
     file_data = make_grayscale(file.read())
-    with open(os.path.join('static/', filename),
-              'wb') as f:
-        f.write(file_data)
+    with open(os.path.join('static/',filename),'wb') as f:
+    	f.write(file_data)
 
-    display_message = 'Image successfully uploaded and displayed below'
-    return render_template('upload.html', filename=filename, message = display_message)
-
+    display_message = 'Image hum successfully uploaded kardiya'
+    return render_template('upload.html',filename=filename,message=display_message)	
 
 
+# Write the make_grayscale() function below
 def make_grayscale(input_image):
 
-    image_array = np.fromstring(input_image, dtype='uint8')
-    print('Image Array:',image_array)
+	image_array = np.fromstring(input_image,dtype='uint8')
+	print('Image array',image_array)
 
-    # decode the array into an image
-    decode_array_to_img = cv2.imdecode(image_array, cv2.IMREAD_UNCHANGED)
-    print('Decode values of Image:', decode_array_to_img)
+	decode_image_array = cv2.imdecode(image_array,cv2.IMREAD_UNCHANGED)
+	print('Value decoded',decode_image_array)
 
-    # Make grayscale
-    converted_gray_img = cv2.cvtColor(decode_array_to_img, cv2.COLOR_RGB2GRAY)
-    status, output_image = cv2.imencode('.PNG', converted_gray_img)
-    print('Status:',status)
+	converted_gray_image = cv2.cvtColor(decode_image_array,cv2.COLOR_RGB2GRAY)
+	status, output_image = cv2.imencode('.PNG',converted_gray_image)
+	print('Status',status)
 
-    return output_image
+	return output_image
 
+# make_grayscale() function ends above
 
 @app.route('/display/<filename>')
 def display_image(filename):
